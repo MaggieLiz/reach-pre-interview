@@ -31,7 +31,7 @@ The results should have this structure:
 module.exports = async function oldestPackageName() {
   // TODO
   const axios = require('axios')
-
+  // * API Request
   const payload = {
     'url': 'https://api.npms.io/v2/search/suggestions?q=react',
     'method': 'GET',
@@ -41,6 +41,7 @@ module.exports = async function oldestPackageName() {
   const res = await axios.post('http://ambush-api.inyourarea.co.uk/ambush/intercept', payload)
   const data =res.data
 
+  // * Drilling down to dates
   const packagesArray = data.content.map(pack => {
     return pack.package
     })
@@ -49,6 +50,7 @@ module.exports = async function oldestPackageName() {
     return item.date
   })  
 
+  // * Sort dates function
   const compare = (a, b) => {
     if (a < b) {
       return -1
@@ -57,10 +59,13 @@ module.exports = async function oldestPackageName() {
     } return 0
   }
 
+  // * Sorting the dates
   const sortedArray = datesArray.sort(compare)
 
+  // * Assigning the oldest date from the sorted array
   const oldestDate = sortedArray[0]
   
+  // * Returning the name that matches the oldest date
   const name = packagesArray.filter(item => {
     if (item.date === oldestDate) {
       return item

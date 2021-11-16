@@ -31,6 +31,8 @@ The results should have this structure:
 
 module.exports = async function countMajorVersionsAbove10() {
   // TODO
+
+  // * API Request
   const axios = require('axios')
   const payload = {
     'url': 'https://api.npms.io/v2/search/suggestions?q=react',
@@ -41,14 +43,17 @@ module.exports = async function countMajorVersionsAbove10() {
   const res = await axios.post('http://ambush-api.inyourarea.co.uk/ambush/intercept', payload)
   const data =res.data
 
+  // * Findng versions
   const versionsArray = data.content.map(unit => {
     return unit.package.version
   })
 
+  // * Filtering for versions over 10 once version had been parsed into a number
   const overTenArray = versionsArray.filter(version => {
     return parseFloat(version) >= 10
   })
 
+  // * Returning the length of the array to see how many are over 10
   const count = overTenArray.length
   return count
 };
